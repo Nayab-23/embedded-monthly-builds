@@ -16,7 +16,7 @@ The timer is configured to run once per day with `Persistent=true` so missed run
 `embedded-monthly-builds-daily.service` executes:
 
 ```bash
-/usr/bin/python3 /home/nayab/embedded-monthly-builds/embedded-monthly-builds/scripts/run_daily_cycle.py --write-state
+/bin/bash -lc 'set -a; [ -f /home/nayab/.openclaw/.env ] && . /home/nayab/.openclaw/.env; set +a; exec /usr/bin/python3 /home/nayab/embedded-monthly-builds/embedded-monthly-builds/scripts/run_daily_cycle.py --write-state --select-next-task --use-ai'
 ```
 
 Working directory:
@@ -42,6 +42,8 @@ Run:
 ## Operational Notes
 
 - The runner writes state back to `state/current_state.json`.
+- The runner selects the next backlog item from unfinished repos before execution.
+- The runner uses the OpenAI API as the primary continuation engine and falls back to deterministic validation if AI execution fails.
 - Daily reports are written under `reports/daily/`.
 - Weekly closeouts are written under `reports/weekly/`.
 - The runner uses a file lock to avoid overlapping executions.
