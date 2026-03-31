@@ -1,0 +1,21 @@
+{
+  "project_id": "embedded-linux-device-supervisor",
+  "display_name": "Embedded Linux Device Supervisor",
+  "week_index": 1,
+  "repo_name": "embedded-linux-device-supervisor",
+  "repo_url": "https://github.com/Nayab-23/embedded-linux-device-supervisor",
+  "local_path": "/home/nayab/embedded-monthly-builds/embedded-monthly-builds/projects/embedded-linux-device-supervisor",
+  "status": "completed",
+  "day_equivalent": 7,
+  "fallback_mode": "software-only monitoring and simulated failures",
+  "health_commands": {
+    "test": [
+      "./scripts/setup_venv.sh",
+      ". .venv/bin/activate && pytest"
+    ],
+    "smoke": [
+      ". .venv/bin/activate && python -m compileall backend"
+    ]
+  },
+  "next_phase": "maintenance and documentation refresh only"
+}

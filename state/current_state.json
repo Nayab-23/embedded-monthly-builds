@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "canonical_control_repo": {
+    "name": "embedded-monthly-builds",
+    "local_path": "/home/nayab/embedded-monthly-builds/embedded-monthly-builds",
+    "repo_url": "https://github.com/Nayab-23/embedded-monthly-builds"
+  },
+  "migration": {
+    "performed_on": "2026-03-30",
+    "source_audit": "docs/reconciliation_audit.md"
+  },
+  "timeline": {
+    "current_week": 3,
+    "current_day_of_week": 6,
+    "current_project": "pico-rtos-sensor-hub",
+    "calendar_anchor": "2026-03-30"
+  },
+  "ai_mode": {
+    "configured": false,
+    "detected_command": null,
+    "fallback_mode": "deterministic_backlog"
+  },
+  "projects": {
+    "embedded-linux-device-supervisor": {
+      "status": "completed",
+      "day_equivalent": 7
+    },
+    "pi-edge-vision-event-detector": {
+      "status": "completed",
+      "day_equivalent": 7
+    },
+    "pico-rtos-sensor-hub": {
+      "status": "active",
+      "day_equivalent": 6
+    },
+    "peripheral-protocol-workbench": {
+      "status": "planned",
+      "day_equivalent": 0
+    }
+  },
+  "last_run": null,
+  "next_scheduled_run": null,
+  "last_weekly_closeout": null
+}

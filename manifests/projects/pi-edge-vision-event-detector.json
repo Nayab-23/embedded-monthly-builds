@@ -1,0 +1,21 @@
+{
+  "project_id": "pi-edge-vision-event-detector",
+  "display_name": "Pi Edge Vision Event Detector",
+  "week_index": 2,
+  "repo_name": "pi-edge-vision-event-detector",
+  "repo_url": "https://github.com/Nayab-23/pi-edge-vision-event-detector",
+  "local_path": "/home/nayab/embedded-monthly-builds/embedded-monthly-builds/projects/pi-edge-vision-event-detector",
+  "status": "completed",
+  "day_equivalent": 7,
+  "fallback_mode": "sample-video event detection",
+  "health_commands": {
+    "test": [
+      "./scripts/setup_venv.sh",
+      ". .venv/bin/activate && pytest"
+    ],
+    "smoke": [
+      ". .venv/bin/activate && python scripts/generate_sample_video.py"
+    ]
+  },
+  "next_phase": "performance tuning and demo packaging only"
+}

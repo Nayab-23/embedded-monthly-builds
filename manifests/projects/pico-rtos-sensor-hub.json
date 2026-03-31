@@ -1,0 +1,24 @@
+{
+  "project_id": "pico-rtos-sensor-hub",
+  "display_name": "Pico RTOS Sensor Hub",
+  "week_index": 3,
+  "repo_name": "pico-rtos-sensor-hub",
+  "repo_url": "https://github.com/Nayab-23/pico-rtos-sensor-hub",
+  "local_path": "/home/nayab/embedded-monthly-builds/embedded-monthly-builds/projects/pico-rtos-sensor-hub",
+  "status": "active",
+  "day_equivalent": 6,
+  "fallback_mode": "host-side simulator and mock telemetry",
+  "health_commands": {
+    "test": [
+      "./scripts/setup_host_tools.sh",
+      ". .venv/bin/activate && pytest tests"
+    ],
+    "smoke": [
+      ". .venv/bin/activate && python -m host_tools.monitor --mode simulator --max-messages 5"
+    ],
+    "build": [
+      "./scripts/build_firmware.sh"
+    ]
+  },
+  "next_phase": "Pi-local validation, build hardening, and weekly closeout"
+}

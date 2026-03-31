@@ -1,0 +1,16 @@
+{
+  "project_id": "peripheral-protocol-workbench",
+  "display_name": "Peripheral Protocol Workbench",
+  "week_index": 4,
+  "repo_name": "peripheral-protocol-workbench",
+  "repo_url": "https://github.com/Nayab-23/peripheral-protocol-workbench",
+  "local_path": "/home/nayab/embedded-monthly-builds/embedded-monthly-builds/projects/peripheral-protocol-workbench",
+  "status": "planned",
+  "day_equivalent": 0,
+  "fallback_mode": "protocol simulation, replay, and fault injection without hardware",
+  "health_commands": {
+    "test": [],
+    "smoke": []
+  },
+  "next_phase": "scaffold repo and start transport protocol tooling after Week 3 closes"
+}
