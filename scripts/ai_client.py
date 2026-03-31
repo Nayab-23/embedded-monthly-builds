@@ -47,13 +47,15 @@ def resolve_ai_settings() -> dict[str, Any]:
 
 def chat_json(messages: list[dict[str, str]], *, model: str | None = None) -> tuple[dict[str, Any], dict[str, Any]]:
     settings = resolve_ai_settings()
+    chosen_model = model or settings["model"]
     payload = {
-        "model": model or settings["model"],
+        "model": chosen_model,
         "messages": messages,
         "temperature": settings["temperature"],
-        "max_tokens": settings["max_tokens"],
         "response_format": {"type": "json_object"},
     }
+    token_key = "max_completion_tokens" if chosen_model.startswith("gpt-5") or chosen_model.startswith("o") else "max_tokens"
+    payload[token_key] = settings["max_tokens"]
     response = requests.post(
         settings["endpoint"],
         headers={
@@ -63,7 +65,8 @@ def chat_json(messages: list[dict[str, str]], *, model: str | None = None) -> tu
         json=payload,
         timeout=settings["timeout_seconds"],
     )
-    response.raise_for_status()
+    if not response.ok:
+        raise RuntimeError(f"OpenAI API error {response.status_code}: {response.text[:800]}")
     data = response.json()
     content = data["choices"][0]["message"]["content"]
     return json.loads(content), {
