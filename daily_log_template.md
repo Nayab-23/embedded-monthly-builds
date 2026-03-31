@@ -1,29 +1,3 @@
 # Daily Log Template
 
-## Today's Goal
-
-- 
-
-## Changes Made
-
-- 
-
-## Files Touched
-
-- 
-
-## Tests Run
-
-- 
-
-## Blockers
-
-- 
-
-## Next Step
-
-- 
-
-## Commit Hashes
-
-- 
+Legacy compatibility file. The active template now lives at `templates/daily_log_template.md`.

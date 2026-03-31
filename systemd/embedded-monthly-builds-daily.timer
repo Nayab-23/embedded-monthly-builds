@@ -1,0 +1,11 @@
+[Unit]
+Description=Run the embedded monthly builds daily cycle
+
+[Timer]
+OnCalendar=*-*-* 08:30:00
+Persistent=true
+AccuracySec=5m
+Unit=embedded-monthly-builds-daily.service
+
+[Install]
+WantedBy=timers.target

@@ -4,6 +4,8 @@ set -euo pipefail
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "${script_dir}/.." && pwd)"
 progress_dir="${repo_root}/progress"
+template_path="${repo_root}/templates/daily_log_template.md"
+legacy_template_path="${repo_root}/daily_log_template.md"
 
 date_input="${1:-$(date +%F)}"
 
@@ -36,36 +38,26 @@ fi
 
 latest_commit="$(git -C "$repo_root" rev-parse --short HEAD 2>/dev/null || true)"
 
-cat > "$target_file" <<EOF
-# Daily Log - ${log_date}
+if [[ -f "$template_path" ]]; then
+  python3 - "$template_path" "$target_file" "$log_date" "${latest_commit:-pending}" <<'PY'
+from pathlib import Path
+import sys
 
-## Today's Goal
+template_path = Path(sys.argv[1])
+target_path = Path(sys.argv[2])
+log_date = sys.argv[3]
+latest_commit = sys.argv[4]
 
-- 
-
-## Changes Made
-
-- 
-
-## Files Touched
-
-- 
-
-## Tests Run
-
-- 
-
-## Blockers
-
-- 
-
-## Next Step
-
-- 
-
-## Commit Hashes
-
-- ${latest_commit:-pending}
-EOF
+content = template_path.read_text()
+content = content.replace("{{date}}", log_date)
+content = content.replace("{{active_project}}", "manual-session")
+content = content.replace("{{week_day}}", "manual-session")
+content = content.replace("{{run_mode}}", "manual")
+content = content.replace("- control repo:", f"- control repo: {latest_commit}")
+target_path.write_text(content)
+PY
+else
+  cp "$legacy_template_path" "$target_file"
+fi
 
 printf '%s\n' "$target_file"

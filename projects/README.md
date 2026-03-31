@@ -1,12 +1,12 @@
 # Projects Directory
 
-Create one dedicated implementation repo per weekly build inside this directory or replace each subdirectory with a checked-out project repo.
+This directory is reserved for local clones of the weekly project repos. Each project remains its own git repository and is intentionally ignored by the control repo.
 
-Suggested naming pattern:
+Canonical project mapping:
 
-- `week-01-device-supervisor`
-- `week-02-edge-vision-detector`
-- `week-03-pico-rtos-sensor-hub`
-- `week-04-micro-ros-peripheral-controller`
+- `embedded-linux-device-supervisor`
+- `pi-edge-vision-event-detector`
+- `pico-rtos-sensor-hub`
+- `peripheral-protocol-workbench`
 
-Use `../scripts/create_project_repo.sh` from inside a new project directory to initialize git, create the matching GitHub repo, and push the first commit.
+The control repo tracks these clones through `manifests/projects/*.json` rather than by embedding them as submodules.
