@@ -65,10 +65,11 @@ Reasoning:
 
 ## GitHub Auth on the Pi
 
-Decision: configure direct GitHub push access on the Pi for the month repos using a dedicated SSH key and SSH remotes.
+Decision: configure direct GitHub push access on the Pi using stored HTTPS credentials for the existing Git remotes.
 
 Reasoning:
 
 - the Pi did not have `gh` installed or authenticated
-- public HTTPS remotes were only enough for read access
-- the autonomous scheduler needs a stable non-interactive push path
+- public HTTPS remotes were only enough for read access at audit time
+- adding an SSH key through the current `gh` session required a missing `admin:public_key` scope
+- the autonomous scheduler still needed a stable non-interactive push path immediately

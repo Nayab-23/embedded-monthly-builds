@@ -8,8 +8,8 @@ This is the reconciled month plan after auditing the real state of the Raspberry
 | --- | --- | --- | --- | --- |
 | 1 | `embedded-linux-device-supervisor` | Completed enough | 7/7 | Real implementation, tests, docs, and service assets already exist |
 | 2 | `pi-edge-vision-event-detector` | Completed enough | 7/7 | Real implementation, tests, docs, and sample demo artifacts already exist |
-| 3 | `pico-rtos-sensor-hub` | Active | 6/7 | Remote implementation exists, but Pi-local integration and validation remained unfinished at migration time |
-| 4 | `peripheral-protocol-workbench` | Planned | 0/7 | New week-4 target replacing the previously planned micro-ROS repo |
+| 3 | `pico-rtos-sensor-hub` | Active | 6/7 | Pi-local validation now follows a simulator-first path; heavy firmware provisioning is deferred |
+| 4 | `peripheral-protocol-workbench` | Scaffolded | 1/7 | New week-4 target replacing the previously planned micro-ROS repo |
 
 ## Current Focus
 

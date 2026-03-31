@@ -10,15 +10,15 @@
   "fallback_mode": "host-side simulator and mock telemetry",
   "health_commands": {
     "test": [
-      "./scripts/setup_host_tools.sh",
-      ". .venv/bin/activate && pytest tests"
+      "./scripts/run_simulator_validation.sh"
     ],
     "smoke": [
-      ". .venv/bin/activate && python -m host_tools.monitor --mode simulator --max-messages 5"
-    ],
-    "build": [
-      "./scripts/build_firmware.sh"
+      "python3 scripts/detect_pico.py"
     ]
   },
+  "deferred_commands": [
+    "./scripts/install_firmware_toolchain.sh",
+    "./scripts/build_firmware.sh"
+  ],
   "next_phase": "Pi-local validation, build hardening, and weekly closeout"
 }

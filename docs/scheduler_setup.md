@@ -46,3 +46,4 @@ Run:
 - Weekly closeouts are written under `reports/weekly/`.
 - The runner uses a file lock to avoid overlapping executions.
 - If the active project repo is dirty, the runner records that fact and avoids destructive sync behavior.
+- The runner enforces the runtime budget from `manifests/runtime_policy.json` and defers heavy provisioning commands instead of blocking the full day.

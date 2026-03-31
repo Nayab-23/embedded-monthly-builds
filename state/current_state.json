@@ -20,6 +20,10 @@
     "detected_command": null,
     "fallback_mode": "deterministic_backlog"
   },
+  "runtime_budget": {
+    "max_single_step_seconds": 300,
+    "defer_heavy_installs": true
+  },
   "projects": {
     "embedded-linux-device-supervisor": {
       "status": "completed",
@@ -34,8 +38,8 @@
       "day_equivalent": 6
     },
     "peripheral-protocol-workbench": {
-      "status": "planned",
-      "day_equivalent": 0
+      "status": "scaffolded",
+      "day_equivalent": 1
     }
   },
   "last_run": null,

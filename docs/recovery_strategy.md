@@ -15,8 +15,9 @@
 4. Detect missing repos, dirty repos, auth gaps, and missing hardware.
 5. If the active project repo is missing, record the failure and continue with reporting.
 6. If a command fails, capture the exit code and stderr summary in the daily report.
-7. If AI mode is unavailable, execute deterministic fallback actions instead of stopping.
-8. Update the next-run pointer and save state before exit.
+7. If a command exceeds the runtime budget, mark it deferred and continue.
+8. If AI mode is unavailable, execute deterministic fallback actions instead of stopping.
+9. Update the next-run pointer and save state before exit.
 
 ## Git Recovery
 

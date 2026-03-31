@@ -61,6 +61,10 @@ def load_manifests() -> dict[str, dict[str, Any]]:
     return manifests
 
 
+def load_runtime_policy() -> dict[str, Any]:
+    return load_json(repo_root() / "manifests" / "runtime_policy.json")
+
+
 @dataclass
 class CommandResult:
     label: str
@@ -69,28 +73,43 @@ class CommandResult:
     returncode: int
     stdout: str
     stderr: str
+    timed_out: bool = False
 
     @property
     def succeeded(self) -> bool:
         return self.returncode == 0
 
 
-def run_shell(command: str, cwd: Path) -> CommandResult:
-    completed = subprocess.run(
-        command,
-        cwd=cwd,
-        shell=True,
-        text=True,
-        capture_output=True,
-    )
-    return CommandResult(
-        label=command,
-        command=command,
-        cwd=str(cwd),
-        returncode=completed.returncode,
-        stdout=completed.stdout.strip(),
-        stderr=completed.stderr.strip(),
-    )
+def run_shell(command: str, cwd: Path, timeout_seconds: int | None = None) -> CommandResult:
+    try:
+        completed = subprocess.run(
+            command,
+            cwd=cwd,
+            shell=True,
+            text=True,
+            capture_output=True,
+            timeout=timeout_seconds,
+        )
+        return CommandResult(
+            label=command,
+            command=command,
+            cwd=str(cwd),
+            returncode=completed.returncode,
+            stdout=completed.stdout.strip(),
+            stderr=completed.stderr.strip(),
+        )
+    except subprocess.TimeoutExpired as exc:
+        stdout = exc.stdout.strip() if isinstance(exc.stdout, str) else ""
+        stderr = exc.stderr.strip() if isinstance(exc.stderr, str) else ""
+        return CommandResult(
+            label=command,
+            command=command,
+            cwd=str(cwd),
+            returncode=124,
+            stdout=stdout,
+            stderr=stderr or f"timed out after {timeout_seconds} seconds",
+            timed_out=True,
+        )
 
 
 def git_head(repo_path: Path) -> str | None:

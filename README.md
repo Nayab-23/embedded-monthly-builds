@@ -43,8 +43,8 @@ This repo intentionally does not absorb the weekly project histories. Each proje
 
 - Week 1 `embedded-linux-device-supervisor`: complete enough to treat as finished and maintenance-ready
 - Week 2 `pi-edge-vision-event-detector`: complete enough to treat as finished and maintenance-ready
-- Week 3 `pico-rtos-sensor-hub`: active and late-stage; needs Pi-local integration, build validation, and closeout
-- Week 4 `peripheral-protocol-workbench`: not yet started at migration time
+- Week 3 `pico-rtos-sensor-hub`: active and late-stage; simulator-first Pi validation is working and heavy firmware provisioning is deferred
+- Week 4 `peripheral-protocol-workbench`: scaffolded and waiting for the week transition
 
 The saved month state therefore resumes at an inferred equivalent of Week 3, Day 6 rather than restarting from Day 1.
 
@@ -68,3 +68,4 @@ Useful documents:
 - [`docs/current_month_plan.md`](docs/current_month_plan.md)
 - [`docs/scheduler_setup.md`](docs/scheduler_setup.md)
 - [`docs/recovery_strategy.md`](docs/recovery_strategy.md)
+- [`docs/runtime_budget_policy.md`](docs/runtime_budget_policy.md)

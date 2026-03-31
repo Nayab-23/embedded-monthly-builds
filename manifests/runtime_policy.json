@@ -1,0 +1,11 @@
+{
+  "max_single_step_seconds": 300,
+  "defer_command_patterns": [
+    "apt-get install",
+    "install_firmware_toolchain.sh",
+    "gcc-arm-none-eabi",
+    "west init",
+    "brew install"
+  ],
+  "notes": "Prefer simulator-first and validation-first work. Heavy provisioning must be deferred rather than block the day."
+}

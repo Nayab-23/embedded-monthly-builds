@@ -13,6 +13,7 @@ from common import (
     git_head,
     git_status_porcelain,
     load_manifests,
+    load_runtime_policy,
     load_state,
     local_now,
     repo_root,
@@ -23,10 +24,40 @@ from common import (
 from detect_environment import collect_environment
 
 
-def _run_group(project_path: Path, commands: list[str], heading: str) -> list[dict[str, Any]]:
+def _is_deferred_command(command: str, runtime_policy: dict[str, Any], manifest: dict[str, Any]) -> bool:
+    if command in set(manifest.get("deferred_commands", [])):
+        return True
+    return any(pattern in command for pattern in runtime_policy.get("defer_command_patterns", []))
+
+
+def _run_group(
+    project_path: Path,
+    commands: list[str],
+    heading: str,
+    runtime_policy: dict[str, Any],
+    manifest: dict[str, Any],
+) -> list[dict[str, Any]]:
     results: list[dict[str, Any]] = []
     for command in commands:
-        result = run_shell(command, project_path)
+        if _is_deferred_command(command, runtime_policy, manifest):
+            results.append(
+                {
+                    "heading": heading,
+                    "command": command,
+                    "cwd": str(project_path),
+                    "returncode": 0,
+                    "stdout": "Deferred by runtime-budget policy.",
+                    "stderr": "",
+                    "deferred": True,
+                }
+            )
+            continue
+
+        result = run_shell(
+            command,
+            project_path,
+            timeout_seconds=int(runtime_policy["max_single_step_seconds"]),
+        )
         results.append(
             {
                 "heading": heading,
@@ -35,6 +66,7 @@ def _run_group(project_path: Path, commands: list[str], heading: str) -> list[di
                 "returncode": result.returncode,
                 "stdout": result.stdout,
                 "stderr": result.stderr,
+                "timed_out": result.timed_out,
             }
         )
         if result.returncode != 0:
@@ -105,6 +137,7 @@ def main() -> int:
 
         state = load_state()
         manifests = load_manifests()
+        runtime_policy = load_runtime_policy()
         environment = collect_environment()
         run_date = args.force_date or today_iso()
         ai_configured = environment["ai_mode"]["configured"]
@@ -133,7 +166,7 @@ def main() -> int:
                 if not ai_configured:
                     for heading in ("test", "smoke"):
                         commands = manifest.get("health_commands", {}).get(heading, [])
-                        command_results.extend(_run_group(project_path, commands, heading))
+                        command_results.extend(_run_group(project_path, commands, heading, runtime_policy, manifest))
                 else:
                     command_results.append(
                         {
@@ -187,6 +220,7 @@ def main() -> int:
 
             state["ai_mode"]["configured"] = ai_configured
             state["ai_mode"]["detected_command"] = environment["ai_mode"]["codex_binary"]
+            state["runtime_budget"] = runtime_policy
             state["last_run"] = {
                 "completed_at": local_now().isoformat(),
                 "project_id": project_id,
