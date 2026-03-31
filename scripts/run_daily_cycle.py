@@ -58,15 +58,22 @@ def _run_group(
             project_path,
             timeout_seconds=int(runtime_policy["max_single_step_seconds"]),
         )
+        stdout = result.stdout
+        if result.timed_out:
+            budget = runtime_policy["max_single_step_seconds"]
+            timeout_note = f"Deferred after exceeding runtime budget of {budget} seconds."
+            stdout = f"{stdout}\n{timeout_note}".strip()
+
         results.append(
             {
                 "heading": heading,
                 "command": command,
                 "cwd": result.cwd,
                 "returncode": result.returncode,
-                "stdout": result.stdout,
+                "stdout": stdout,
                 "stderr": result.stderr,
                 "timed_out": result.timed_out,
+                "deferred": result.timed_out,
             }
         )
         if result.returncode != 0:
@@ -101,6 +108,10 @@ def _write_report(report_path: Path, payload: dict[str, Any]) -> None:
             lines.append(f"### {item['heading']}: `{item['command']}`")
             lines.append("")
             lines.append(f"- Return code: `{item['returncode']}`")
+            if item.get("deferred"):
+                lines.append("- Deferred: `True`")
+            if item.get("timed_out"):
+                lines.append("- Timed out: `True`")
             if item["stdout"]:
                 lines.append("")
                 lines.append("```text")

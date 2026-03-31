@@ -13,6 +13,8 @@ The month runner must prefer incremental progress over expensive provisioning.
 
 - maximum single step runtime: 300 seconds
 - heavy command patterns deferred:
+  - `bootstrap_pi.sh`
+  - `apt-get update`
   - `apt-get install`
   - `install_firmware_toolchain.sh`
   - `gcc-arm-none-eabi`
@@ -23,4 +25,5 @@ The month runner must prefer incremental progress over expensive provisioning.
 
 - the daily runner can still run tests, smoke checks, dashboards, and simulator workflows
 - long SDK or toolchain installs no longer consume an entire day by accident
+- timed-out setup work is reported as deferred so the next run can continue cleanly
 - project progress remains meaningful even on a hardware-limited or time-bounded Raspberry Pi

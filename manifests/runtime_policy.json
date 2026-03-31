@@ -1,6 +1,8 @@
 {
   "max_single_step_seconds": 300,
   "defer_command_patterns": [
+    "bootstrap_pi.sh",
+    "apt-get update",
     "apt-get install",
     "install_firmware_toolchain.sh",
     "gcc-arm-none-eabi",
