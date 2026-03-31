@@ -90,7 +90,7 @@ def _write_report(report_path: Path, payload: dict[str, Any]) -> None:
     lines.append("")
     lines.append(f"- Camera detected: `{payload['environment']['camera']['detected']}`")
     lines.append(f"- Pico detected: `{payload['environment']['serial']['pico_detected']}`")
-    lines.append(f"- GitHub SSH ready: `{payload['environment']['github']['github_ssh_ready']}`")
+    lines.append(f"- GitHub push ready: `{payload['environment']['github']['push_ready']}`")
     lines.append("")
     lines.append("## Command Results")
     lines.append("")

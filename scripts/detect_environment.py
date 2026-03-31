@@ -80,6 +80,8 @@ def _git_push_auth() -> dict[str, Any]:
     ssh_binary = _which("ssh")
     github_ssh_ready = False
     github_ssh_error = None
+    credential_helper = None
+    credential_store_present = Path.home().joinpath(".git-credentials").exists()
     if ssh_binary:
         try:
             code, stdout, stderr = _run(
@@ -90,10 +92,16 @@ def _git_push_auth() -> dict[str, Any]:
             github_ssh_error = stderr or stdout
         except subprocess.TimeoutExpired:
             github_ssh_error = "ssh test timed out"
+    code, stdout, _ = _run(["git", "config", "--global", "--get", "credential.helper"])
+    if code == 0 and stdout:
+        credential_helper = stdout
     return {
         "gh_installed": bool(_which("gh")),
         "github_ssh_ready": github_ssh_ready,
         "github_ssh_check": github_ssh_error,
+        "git_credential_helper": credential_helper,
+        "git_credential_store_present": credential_store_present,
+        "push_ready": github_ssh_ready or bool(credential_helper and credential_store_present),
     }
 
 
