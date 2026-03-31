@@ -8,10 +8,12 @@ from pathlib import Path
 import subprocess
 from typing import Any
 
+from ai_execute_task import execute_task
 from common import (
     ensure_progress_log,
     git_head,
     git_status_porcelain,
+    load_global_config,
     load_manifests,
     load_runtime_policy,
     load_state,
@@ -21,6 +23,7 @@ from common import (
     save_state,
     today_iso,
 )
+from continuation import apply_selection_to_state, choose_next_task
 from detect_environment import collect_environment
 
 
@@ -92,6 +95,8 @@ def _write_report(report_path: Path, payload: dict[str, Any]) -> None:
     lines.append(f"- Project path: `{payload['project_path']}`")
     lines.append(f"- AI configured: `{payload['ai_configured']}`")
     lines.append(f"- Progress log: `{payload['progress_log']}`")
+    if payload.get("selected_task"):
+        lines.append(f"- Selected task: `{payload['selected_task']['project_id']}::{payload['selected_task']['task_id']}`")
     lines.append("")
     lines.append("## Environment Highlights")
     lines.append("")
@@ -136,6 +141,8 @@ def main() -> int:
     parser.add_argument("--write-state", action="store_true")
     parser.add_argument("--force-project", help="Override the active project from state.")
     parser.add_argument("--force-date", help="Override the report date in YYYY-MM-DD format.")
+    parser.add_argument("--select-next-task", action="store_true")
+    parser.add_argument("--use-ai", action="store_true")
     parser.add_argument("--skip-commands", action="store_true")
     args = parser.parse_args()
 
@@ -149,11 +156,18 @@ def main() -> int:
         state = load_state()
         manifests = load_manifests()
         runtime_policy = load_runtime_policy()
+        global_config = load_global_config()
         environment = collect_environment()
         run_date = args.force_date or today_iso()
         ai_configured = environment["ai_mode"]["configured"]
         run_mode = "ai-assisted" if ai_configured else "deterministic-backlog"
         progress_log = ensure_progress_log(state, run_mode, target_date=run_date)
+
+        selected_task = None
+        if args.select_next_task or state.get("continuation_mode", {}).get("enabled"):
+            selection = choose_next_task(state, manifests, global_config, run_date)
+            apply_selection_to_state(state, manifests, selection, run_date)
+            selected_task = state.get("active_backlog_item")
 
         project_id = args.force_project or state["timeline"]["current_project"]
         manifest = manifests[project_id]
@@ -174,7 +188,35 @@ def main() -> int:
                     }
                 )
             else:
-                if not ai_configured:
+                use_ai = (args.use_ai or state["ai_mode"].get("primary_execution")) and ai_configured
+                if use_ai and selected_task:
+                    try:
+                        ai_result = execute_task(state, manifests, run_date, write_state=False)
+                        command_results.append(
+                            {
+                                "heading": "ai-execution",
+                                "command": f"{selected_task['project_id']}::{selected_task['task_id']}",
+                                "cwd": str(project_path),
+                                "returncode": 0 if ai_result["status"] == "success" else 1,
+                                "stdout": json.dumps(ai_result, indent=2),
+                                "stderr": "",
+                            }
+                        )
+                    except Exception as exc:  # pragma: no cover - exercised through end-to-end runs
+                        command_results.append(
+                            {
+                                "heading": "ai-execution",
+                                "command": f"{selected_task['project_id']}::{selected_task['task_id']}",
+                                "cwd": str(project_path),
+                                "returncode": 1,
+                                "stdout": "",
+                                "stderr": str(exc),
+                            }
+                        )
+                        for heading in ("test", "smoke"):
+                            commands = manifest.get("health_commands", {}).get(heading, [])
+                            command_results.extend(_run_group(project_path, commands, heading, runtime_policy, manifest))
+                elif not ai_configured:
                     for heading in ("test", "smoke"):
                         commands = manifest.get("health_commands", {}).get(heading, [])
                         command_results.extend(_run_group(project_path, commands, heading, runtime_policy, manifest))
@@ -210,6 +252,7 @@ def main() -> int:
             "run_mode": run_mode,
             "ai_configured": ai_configured,
             "progress_log": str(progress_log),
+            "selected_task": selected_task,
             "environment": environment,
             "command_results": command_results,
             "head_before": head_before,
@@ -231,6 +274,7 @@ def main() -> int:
 
             state["ai_mode"]["configured"] = ai_configured
             state["ai_mode"]["detected_command"] = environment["ai_mode"]["codex_binary"]
+            state["ai_mode"]["primary_execution"] = bool(global_config["ai_execution"]["enabled"])
             state["runtime_budget"] = runtime_policy
             state["last_run"] = {
                 "completed_at": local_now().isoformat(),

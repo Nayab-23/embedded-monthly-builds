@@ -1,0 +1,41 @@
+{
+  "ai_execution": {
+    "enabled": true,
+    "provider": "openai",
+    "endpoint": "https://api.openai.com/v1/chat/completions",
+    "default_model": "gpt-5.4-mini",
+    "fallback_model": "gpt-4.1-mini",
+    "candidate_env_files": [
+      "/home/nayab/.openclaw/.env"
+    ],
+    "env_var_names": [
+      "OPENAI_API_KEY",
+      "OPENAI_BASE_URL",
+      "MONTHLY_BUILDS_OPENAI_MODEL",
+      "OPENAI_MODEL"
+    ],
+    "timeout_seconds": 120,
+    "temperature": 0.2,
+    "max_tokens": 3200,
+    "max_files_per_run": 3,
+    "max_file_chars": 32000
+  },
+  "continuation": {
+    "enabled": true,
+    "project_priority": [
+      "peripheral-protocol-workbench",
+      "pico-rtos-sensor-hub",
+      "pi-edge-vision-event-detector",
+      "embedded-linux-device-supervisor"
+    ],
+    "selection_strategy": "priority_then_first_open_task"
+  },
+  "validation": {
+    "step_timeout_seconds": 300
+  },
+  "git": {
+    "author_name": "Nayab",
+    "author_email": "203646792+Nayab-23@users.noreply.github.com",
+    "default_branch": "main"
+  }
+}

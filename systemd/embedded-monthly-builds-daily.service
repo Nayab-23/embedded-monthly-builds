@@ -8,7 +8,7 @@ Type=oneshot
 User=nayab
 WorkingDirectory=/home/nayab/embedded-monthly-builds/embedded-monthly-builds
 Environment=HOME=/home/nayab
-ExecStart=/usr/bin/python3 /home/nayab/embedded-monthly-builds/embedded-monthly-builds/scripts/run_daily_cycle.py --write-state
+ExecStart=/bin/bash -lc 'set -a; [ -f /home/nayab/.openclaw/.env ] && . /home/nayab/.openclaw/.env; set +a; exec /usr/bin/python3 /home/nayab/embedded-monthly-builds/embedded-monthly-builds/scripts/run_daily_cycle.py --write-state --select-next-task --use-ai'
 
 [Install]
 WantedBy=multi-user.target

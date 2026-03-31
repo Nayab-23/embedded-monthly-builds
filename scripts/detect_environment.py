@@ -107,10 +107,12 @@ def _git_push_auth() -> dict[str, Any]:
 
 def _ai_summary() -> dict[str, Any]:
     codex_binary = _which("codex")
-    openai_key_present = bool(Path.home().joinpath(".openai").exists()) or bool(os.environ.get("OPENAI_API_KEY"))
+    env_file = Path.home().joinpath(".openclaw/.env")
+    openai_key_present = env_file.exists() or bool(Path.home().joinpath(".openai").exists()) or bool(os.environ.get("OPENAI_API_KEY"))
     return {
         "codex_binary": codex_binary,
         "openai_api_key_present": openai_key_present,
+        "env_file": str(env_file) if env_file.exists() else None,
         "configured": bool(codex_binary or openai_key_present),
     }
 

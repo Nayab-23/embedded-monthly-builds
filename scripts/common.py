@@ -65,6 +65,10 @@ def load_runtime_policy() -> dict[str, Any]:
     return load_json(repo_root() / "manifests" / "runtime_policy.json")
 
 
+def load_global_config() -> dict[str, Any]:
+    return load_json(repo_root() / "config" / "global_config.json")
+
+
 @dataclass
 class CommandResult:
     label: str
