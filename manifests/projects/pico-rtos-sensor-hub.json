@@ -5,9 +5,31 @@
   "repo_name": "pico-rtos-sensor-hub",
   "repo_url": "https://github.com/Nayab-23/pico-rtos-sensor-hub",
   "local_path": "/home/nayab/embedded-monthly-builds/embedded-monthly-builds/projects/pico-rtos-sensor-hub",
-  "status": "completed",
+  "status": "mid-build",
+  "status_category": "mid-build",
+  "completion_estimate_pct": 58,
   "day_equivalent": 7,
   "fallback_mode": "host-side simulator and mock telemetry",
+  "continuation_priority": 2,
+  "continuation_mode": "integration-buildout",
+  "implemented": [
+    "Pico SDK + FreeRTOS firmware workspace and source layout",
+    "host-side monitor, dashboard, discovery, and simulator",
+    "build, flash, and validation scripts with pytest coverage"
+  ],
+  "missing": [
+    "verified real-hardware flash and serial session",
+    "deeper firmware-side validation and optional watchdog verification"
+  ],
+  "deferred": [
+    "heavy Pi-local firmware toolchain bootstrap",
+    "real Pico bring-up until hardware is attached"
+  ],
+  "done_definition": [
+    "validated host tooling with simulator and real serial device",
+    "firmware build artifact produced cleanly on demand",
+    "documented flash/bring-up flow exercised on hardware"
+  ],
   "health_commands": {
     "test": [
       "./scripts/run_simulator_validation.sh"
@@ -20,5 +42,21 @@
     "./scripts/install_firmware_toolchain.sh",
     "./scripts/build_firmware.sh"
   ],
-  "next_phase": "defer real Pico toolchain bring-up until hardware is attached or explicitly requested"
+  "next_phase": "continue host-tooling and simulator improvements while deferring real hardware bring-up",
+  "continuation_backlog": [
+    {
+      "id": "host-session-export",
+      "title": "Add host-side telemetry session export and summary stats",
+      "description": "Extend the host tooling to persist per-session metadata and generate a concise summary that is useful even in simulator mode.",
+      "context_files": [
+        "host_tools/storage.py",
+        "host_tools/monitor.py",
+        "tests/test_storage.py"
+      ],
+      "validation_commands": [
+        "./scripts/run_simulator_validation.sh"
+      ],
+      "commit_message": "feature: add telemetry session export summaries"
+    }
+  ]
 }

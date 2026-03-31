@@ -5,9 +5,31 @@
   "repo_name": "pi-edge-vision-event-detector",
   "repo_url": "https://github.com/Nayab-23/pi-edge-vision-event-detector",
   "local_path": "/home/nayab/embedded-monthly-builds/embedded-monthly-builds/projects/pi-edge-vision-event-detector",
-  "status": "completed",
+  "status": "late-stage",
+  "status_category": "late-stage",
+  "completion_estimate_pct": 79,
   "day_equivalent": 7,
   "fallback_mode": "sample-video event detection",
+  "continuation_priority": 3,
+  "continuation_mode": "polish-verification",
+  "implemented": [
+    "camera/USB/sample-video source selection",
+    "motion detection, recording, SQLite storage, and dashboard",
+    "service assets and non-camera test coverage"
+  ],
+  "missing": [
+    "stronger retention visibility and service-level health summaries",
+    "more complete performance-tuning and packaging polish"
+  ],
+  "deferred": [
+    "hardware-specific Pi camera tuning",
+    "accelerated optional object-detection path"
+  ],
+  "done_definition": [
+    "stable long-run capture service",
+    "clear operator dashboard for retention/storage health",
+    "documented demo workflow with hardware and fallback modes"
+  ],
   "health_commands": {
     "test": [
       "./scripts/setup_venv.sh",
@@ -17,5 +39,22 @@
       ". .venv/bin/activate && python scripts/generate_sample_video.py"
     ]
   },
-  "next_phase": "performance tuning and demo packaging only"
+  "next_phase": "polish, retention visibility, and performance verification",
+  "continuation_backlog": [
+    {
+      "id": "retention-health-surface",
+      "title": "Expose retention and storage health in the dashboard summary",
+      "description": "Add a lightweight summary of retention counts and storage pressure so operators can see when media cleanup is needed.",
+      "context_files": [
+        "app/main.py",
+        "templates/dashboard.html",
+        "tests/test_api.py"
+      ],
+      "validation_commands": [
+        "./scripts/setup_venv.sh",
+        ". .venv/bin/activate && pytest"
+      ],
+      "commit_message": "feature: add retention health summary"
+    }
+  ]
 }

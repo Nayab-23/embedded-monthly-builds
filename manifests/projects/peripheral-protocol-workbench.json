@@ -5,9 +5,31 @@
   "repo_name": "peripheral-protocol-workbench",
   "repo_url": "https://github.com/Nayab-23/peripheral-protocol-workbench",
   "local_path": "/home/nayab/embedded-monthly-builds/embedded-monthly-builds/projects/peripheral-protocol-workbench",
-  "status": "active",
+  "status": "early-stage",
+  "status_category": "early-stage",
+  "completion_estimate_pct": 28,
   "day_equivalent": 1,
   "fallback_mode": "protocol simulation, replay, and fault injection without hardware",
+  "continuation_priority": 1,
+  "continuation_mode": "active-buildout",
+  "implemented": [
+    "binary frame encode/decode core",
+    "loopback transport abstraction",
+    "replay demo and protocol tests"
+  ],
+  "missing": [
+    "stream parser and resynchronization",
+    "serial/UART transport",
+    "session logging or dashboard tooling"
+  ],
+  "deferred": [
+    "real I2C/SPI/CAN hardware adapters"
+  ],
+  "done_definition": [
+    "stream parser, serial transport, and replay tooling",
+    "fault injection and session inspection workflow",
+    "operator-facing CLI or dashboard for protocol review"
+  ],
   "health_commands": {
     "test": [
       "if [ ! -d .venv ]; then python3 -m venv .venv; fi && . .venv/bin/activate && pip install -q -e '.[dev]' && pytest"
@@ -16,5 +38,36 @@
       "if [ ! -d .venv ]; then python3 -m venv .venv; fi && . .venv/bin/activate && pip install -q -e '.[dev]' && python scripts/replay_demo.py"
     ]
   },
-  "next_phase": "expand replay, transport abstraction, and dashboard tooling as the active Week 4 project"
+  "next_phase": "expand replay, transport abstraction, serial tooling, and operator visibility",
+  "continuation_backlog": [
+    {
+      "id": "stream-parser",
+      "title": "Add incremental byte-stream parsing with resynchronization",
+      "description": "Implement a streaming parser that accepts arbitrary byte chunks, emits decoded frames when complete, skips noise before the start byte, and recovers cleanly after bad checksums. Add tests for partial-frame, noise-resync, and recovery behavior.",
+      "context_files": [
+        "peripheral_protocol_workbench/protocol.py",
+        "tests/test_protocol.py",
+        "README.md"
+      ],
+      "validation_commands": [
+        "if [ ! -d .venv ]; then python3 -m venv .venv; fi && . .venv/bin/activate && pip install -q -e '.[dev]' && pytest"
+      ],
+      "commit_message": "feature: add streaming frame parser"
+    },
+    {
+      "id": "serial-session-cli",
+      "title": "Add a serial session replay CLI",
+      "description": "Create a small CLI for replaying captured protocol sessions and printing frame summaries for operator review.",
+      "context_files": [
+        "peripheral_protocol_workbench/transports.py",
+        "scripts/replay_demo.py",
+        "README.md"
+      ],
+      "validation_commands": [
+        "if [ ! -d .venv ]; then python3 -m venv .venv; fi && . .venv/bin/activate && pip install -q -e '.[dev]' && pytest",
+        "if [ ! -d .venv ]; then python3 -m venv .venv; fi && . .venv/bin/activate && pip install -q -e '.[dev]' && python scripts/replay_demo.py"
+      ],
+      "commit_message": "feature: add serial session replay cli"
+    }
+  ]
 }

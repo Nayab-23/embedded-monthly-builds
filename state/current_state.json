@@ -13,11 +13,25 @@
     "current_week": 4,
     "current_day_of_week": 1,
     "current_project": "peripheral-protocol-workbench",
-    "calendar_anchor": "2026-03-30"
+    "calendar_anchor": "2026-03-30",
+    "rollover_policy": "continue_without_reset"
   },
   "ai_mode": {
-    "configured": false,
+    "configured": true,
     "detected_command": null,
+    "provider": "openai",
+    "primary_execution": true,
+    "config_mechanism": {
+      "env_file_candidates": [
+        "/home/nayab/.openclaw/.env"
+      ],
+      "env_var_names": [
+        "OPENAI_API_KEY",
+        "OPENAI_BASE_URL",
+        "MONTHLY_BUILDS_OPENAI_MODEL",
+        "OPENAI_MODEL"
+      ]
+    },
     "fallback_mode": "deterministic_backlog"
   },
   "runtime_budget": {
@@ -33,24 +47,63 @@
     ],
     "notes": "Prefer simulator-first and validation-first work. Heavy provisioning must be deferred rather than block the day."
   },
+  "continuation_mode": {
+    "enabled": true,
+    "saved": true,
+    "entered_on": "2026-03-31",
+    "source_month": "2026-03",
+    "target_month": "2026-04",
+    "no_reset": true,
+    "selection_strategy": "priority_then_first_open_task",
+    "prioritized_project_id": "peripheral-protocol-workbench",
+    "last_selected_task": {
+      "project_id": "peripheral-protocol-workbench",
+      "task_id": "stream-parser",
+      "title": "Add incremental byte-stream parsing with resynchronization",
+      "selected_at": "2026-03-31"
+    }
+  },
   "projects": {
     "embedded-linux-device-supervisor": {
-      "status": "completed",
-      "day_equivalent": 7
+      "status": "late-stage",
+      "day_equivalent": 7,
+      "completion_estimate_pct": 84
     },
     "pi-edge-vision-event-detector": {
-      "status": "completed",
-      "day_equivalent": 7
+      "status": "late-stage",
+      "day_equivalent": 7,
+      "completion_estimate_pct": 79
     },
     "pico-rtos-sensor-hub": {
-      "status": "completed",
+      "status": "mid-build",
       "day_equivalent": 7,
+      "completion_estimate_pct": 58,
       "last_seen_commit": "7bffc238480923649dd0242d04dc5f8ee5c11141"
     },
     "peripheral-protocol-workbench": {
-      "status": "active",
-      "day_equivalent": 1
+      "status": "early-stage",
+      "day_equivalent": 1,
+      "completion_estimate_pct": 28,
+      "active_task_id": "stream-parser",
+      "active_task_title": "Add incremental byte-stream parsing with resynchronization"
     }
+  },
+  "active_backlog_item": {
+    "project_id": "peripheral-protocol-workbench",
+    "project_name": "Peripheral Protocol Workbench",
+    "task_id": "stream-parser",
+    "title": "Add incremental byte-stream parsing with resynchronization",
+    "description": "Implement a streaming parser that accepts arbitrary byte chunks, emits decoded frames when complete, skips noise before the start byte, and recovers cleanly after bad checksums. Add tests for partial-frame, noise-resync, and recovery behavior.",
+    "commit_message": "feature: add streaming frame parser",
+    "context_files": [
+      "peripheral_protocol_workbench/protocol.py",
+      "tests/test_protocol.py",
+      "README.md"
+    ],
+    "validation_commands": [
+      "if [ ! -d .venv ]; then python3 -m venv .venv; fi && . .venv/bin/activate && pip install -q -e '.[dev]' && pytest"
+    ],
+    "selected_at": "2026-03-31"
   },
   "last_run": {
     "completed_at": "2026-03-30T23:10:09.390213-07:00",
@@ -58,10 +111,12 @@
     "report_path": "/home/nayab/embedded-monthly-builds/embedded-monthly-builds/reports/daily/2026-03-30-pico-rtos-sensor-hub.md",
     "run_mode": "deterministic-backlog"
   },
-  "next_scheduled_run": "Tue 2026-03-31 08:30:00 PDT",
+  "next_scheduled_run": "Managed by embedded-monthly-builds-daily.timer",
   "last_weekly_closeout": {
     "project_id": "pico-rtos-sensor-hub",
     "report_path": "/home/nayab/embedded-monthly-builds/embedded-monthly-builds/reports/weekly/2026-03-30-week3-pico-rtos-sensor-hub.md",
     "completed_at": "2026-03-30T23:10:25.000000-07:00"
-  }
+  },
+  "last_ai_execution": null,
+  "completed_backlog_items": {}
 }

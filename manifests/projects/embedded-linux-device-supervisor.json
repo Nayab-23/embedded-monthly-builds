@@ -5,9 +5,31 @@
   "repo_name": "embedded-linux-device-supervisor",
   "repo_url": "https://github.com/Nayab-23/embedded-linux-device-supervisor",
   "local_path": "/home/nayab/embedded-monthly-builds/embedded-monthly-builds/projects/embedded-linux-device-supervisor",
-  "status": "completed",
+  "status": "late-stage",
+  "status_category": "late-stage",
+  "completion_estimate_pct": 84,
   "day_equivalent": 7,
   "fallback_mode": "software-only monitoring and simulated failures",
+  "continuation_priority": 4,
+  "continuation_mode": "polish-verification",
+  "implemented": [
+    "FastAPI backend with telemetry, alerts, and SQLite persistence",
+    "dashboard and service health pages",
+    "systemd service assets and pytest coverage"
+  ],
+  "missing": [
+    "long-run soak coverage and richer recovery-hook verification",
+    "more operator-friendly config editing and trend views"
+  ],
+  "deferred": [
+    "real GPIO heartbeat wiring",
+    "extended deployment hardening for unattended field installs"
+  ],
+  "done_definition": [
+    "stable multi-hour service run on Pi",
+    "verified recovery hooks and alert transitions",
+    "operator docs and demo workflow fully polished"
+  ],
   "health_commands": {
     "test": [
       "./scripts/setup_venv.sh",
@@ -17,5 +39,21 @@
       ". .venv/bin/activate && python -m compileall backend"
     ]
   },
-  "next_phase": "maintenance and documentation refresh only"
+  "next_phase": "polish, soak validation, and recovery-hook verification",
+  "continuation_backlog": [
+    {
+      "id": "recovery-hook-cooldown",
+      "title": "Enforce cooldowns around automated recovery hooks",
+      "description": "Prevent repeated recovery actions from firing too quickly and add tests for the cooldown behavior.",
+      "context_files": [
+        "backend/alerts.py",
+        "tests/test_alert_engine.py"
+      ],
+      "validation_commands": [
+        "./scripts/setup_venv.sh",
+        ". .venv/bin/activate && pytest"
+      ],
+      "commit_message": "feature: add recovery hook cooldown protection"
+    }
+  ]
 }
