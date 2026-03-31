@@ -5,16 +5,16 @@
   "repo_name": "peripheral-protocol-workbench",
   "repo_url": "https://github.com/Nayab-23/peripheral-protocol-workbench",
   "local_path": "/home/nayab/embedded-monthly-builds/embedded-monthly-builds/projects/peripheral-protocol-workbench",
-  "status": "scaffolded",
+  "status": "active",
   "day_equivalent": 1,
   "fallback_mode": "protocol simulation, replay, and fault injection without hardware",
   "health_commands": {
     "test": [
-      ". .venv/bin/activate && pytest"
+      "if [ ! -d .venv ]; then python3 -m venv .venv; fi && . .venv/bin/activate && pip install -q -e '.[dev]' && pytest"
     ],
     "smoke": [
-      ". .venv/bin/activate && python scripts/replay_demo.py"
+      "if [ ! -d .venv ]; then python3 -m venv .venv; fi && . .venv/bin/activate && pip install -q -e '.[dev]' && python scripts/replay_demo.py"
     ]
   },
-  "next_phase": "expand replay, transport abstraction, and dashboard tooling after Week 3 closes"
+  "next_phase": "expand replay, transport abstraction, and dashboard tooling as the active Week 4 project"
 }

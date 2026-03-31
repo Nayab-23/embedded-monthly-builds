@@ -10,9 +10,9 @@
     "source_audit": "docs/reconciliation_audit.md"
   },
   "timeline": {
-    "current_week": 3,
-    "current_day_of_week": 6,
-    "current_project": "pico-rtos-sensor-hub",
+    "current_week": 4,
+    "current_day_of_week": 1,
+    "current_project": "peripheral-protocol-workbench",
     "calendar_anchor": "2026-03-30"
   },
   "ai_mode": {
@@ -22,7 +22,16 @@
   },
   "runtime_budget": {
     "max_single_step_seconds": 300,
-    "defer_heavy_installs": true
+    "defer_command_patterns": [
+      "bootstrap_pi.sh",
+      "apt-get update",
+      "apt-get install",
+      "install_firmware_toolchain.sh",
+      "gcc-arm-none-eabi",
+      "west init",
+      "brew install"
+    ],
+    "notes": "Prefer simulator-first and validation-first work. Heavy provisioning must be deferred rather than block the day."
   },
   "projects": {
     "embedded-linux-device-supervisor": {
@@ -34,15 +43,25 @@
       "day_equivalent": 7
     },
     "pico-rtos-sensor-hub": {
-      "status": "active",
-      "day_equivalent": 6
+      "status": "completed",
+      "day_equivalent": 7,
+      "last_seen_commit": "7bffc238480923649dd0242d04dc5f8ee5c11141"
     },
     "peripheral-protocol-workbench": {
-      "status": "scaffolded",
+      "status": "active",
       "day_equivalent": 1
     }
   },
-  "last_run": null,
-  "next_scheduled_run": null,
-  "last_weekly_closeout": null
+  "last_run": {
+    "completed_at": "2026-03-30T23:10:09.390213-07:00",
+    "project_id": "pico-rtos-sensor-hub",
+    "report_path": "/home/nayab/embedded-monthly-builds/embedded-monthly-builds/reports/daily/2026-03-30-pico-rtos-sensor-hub.md",
+    "run_mode": "deterministic-backlog"
+  },
+  "next_scheduled_run": "Tue 2026-03-31 08:30:00 PDT",
+  "last_weekly_closeout": {
+    "project_id": "pico-rtos-sensor-hub",
+    "report_path": "/home/nayab/embedded-monthly-builds/embedded-monthly-builds/reports/weekly/2026-03-30-week3-pico-rtos-sensor-hub.md",
+    "completed_at": "2026-03-30T23:10:25.000000-07:00"
+  }
 }
